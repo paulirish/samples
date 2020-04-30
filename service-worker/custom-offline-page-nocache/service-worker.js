@@ -23,6 +23,7 @@ self.addEventListener('install', (event) => {
     const cache = await caches.open(CACHE_NAME);
     // Setting {cache: 'reload'} in the new request will ensure that the response
     // isn't fulfilled from the HTTP cache; i.e., it will be from the network.
+    // paul: i think i want to keep that
     await cache.add(new Request(OFFLINE_URL, {cache: 'reload'}));
   })());
 });
@@ -59,11 +60,11 @@ self.addEventListener('fetch', (event) => {
         // due to a network error.
         // If fetch() returns a valid HTTP response with a response code in
         // the 4xx or 5xx range, the catch() will NOT be called.
-        console.log('Fetch failed; returning offline page instead.', error);
+        console.error('Fetch failed; ', error);
 
-        const cache = await caches.open(CACHE_NAME);
-        const cachedResponse = await cache.match(OFFLINE_URL);
-        return cachedResponse;
+        // const cache = await caches.open(CACHE_NAME);
+        // const cachedResponse = await cache.match(OFFLINE_URL);
+        // return cachedResponse;
       }
     })());
   }
